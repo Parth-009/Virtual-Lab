@@ -1,0 +1,376 @@
+<html>
+<head>
+	 <title>Experiment</title>
+	<style>
+		body{
+			background-color:#5CDB95;
+			}
+		*{
+		margin:7;
+		padding:5;
+		list-style:none;
+		text-decoration:none;
+		}
+			
+		.img{
+			float:center;
+			margin-top:0px;
+			margin-right:0px;
+			height:10px;
+			width:100px;
+		     }
+		.img1{
+			float:right;
+			margin-top:-20px;
+			margin-left:0px;
+			height:10px;
+			width:100px;
+		     }
+		
+		.sidebar{
+			margin-left:0px;
+			margin-top:120px;
+			float:left;
+			height:550px;
+			width:250px;
+			font-size:22;
+			padding:0px;
+			line-height:40%;
+			font-family: "Oswald",sans-serief;
+			font-weight:300;
+			color:#EDF5E1;
+			}
+		.line{
+		    border-right:5px solid red;
+	            margin-left:80px;
+		    margin-top:-370px;
+		    height:340px;
+		    }
+		.vignerecipher{
+			background-color:;
+			text-align:center;
+			margin-top:60px;
+			height:150px;
+			padding-left:10;	
+			font-family: "Oswald",sans-serief;
+			font-size:40;
+			color:red;
+			}
+		.experiment{
+			float:left;
+			margin-top:-100px;
+			}
+	</style>
+	<script>
+	var e = "Enter Text!";
+
+function ENCODE(form) 
+{
+  var  keystring = form.key.value;
+  keystring_orig = keystring;
+  Temp = new Array();
+  pl_num = ""; cl_num = ""; cl_char = ""; key_num = "";
+  pl_char = form.enc_plain_char.value;
+  while(keystring.length < pl_char.length){keystring+=keystring_orig}
+  if(pl_char == "") alert(e);
+  else {
+        for(i = 0; i < pl_char.length; i++) 
+         {
+         key_num += (keystring.charCodeAt(i) - 97) + " ";   
+         if((pl_char.charCodeAt(i)>=97) && (pl_char.charCodeAt(i)<=122))
+	         	{
+	         	 	Temp[i] = 97 + ((pl_char.charCodeAt(i) - 97) + (keystring.charCodeAt(i) - 97))%26;
+              	pl_num += pl_char.charCodeAt(i) - 97 + " ";
+              	cl_num += Temp[i] - 97 + " "; 
+              	cl_char += String.fromCharCode(Temp[i]);
+              } 	    
+          
+          else if  ((pl_char.charCodeAt(i)>=65) && (pl_char.charCodeAt(i)<=90))
+		       {
+		       	Temp[i] = 65 + ((pl_char.charCodeAt(i)- 65) + (keystring.charCodeAt(i) - 97))%26;
+	              pl_num += pl_char.charCodeAt(i) - 65 + " ";
+         		   cl_num += Temp[i] - 65 + " "; 
+                 cl_char += String.fromCharCode(Temp[i]);
+              } 
+               else 
+          			if (pl_char.charCodeAt(i)== 32)
+          			{
+          				pl_num += " ";
+         		   		cl_num += " "; 
+                 		cl_char += " ";
+                 }  
+                 else    
+                 {
+                     pl_num += pl_char.charCodeAt(i) + " ";
+         		   		cl_num += pl_char.charCodeAt(i) + " "; 
+                 		cl_char += String.fromCharCode(pl_char.charCodeAt(i));
+                 }
+          }
+       
+       }       
+        form.enc_plain_num.value = pl_num;
+        form.enc_cipher_num.value = cl_num;
+        form.enc_cipher_char.value = cl_char;
+        form.dec_cipher_char.value = cl_char;
+        form.dec_cipher_num.value = cl_num;
+        form.key_num.value = key_num;
+        form.key.value = keystring;        
+        form.dec_plain_num.value = "";
+        form.dec_plain_char.value = "";
+
+}
+
+function DECODE(form) 
+{
+  var  keystring = form.key.value;
+  keystring_orig = keystring;
+  Temp = new Array();
+  pl_num = ""; cl_num = ""; pl_char = ""; key_num = "";
+  cl_char = form.dec_cipher_char.value;
+  while(keystring.length < cl_char.length){keystring+=keystring_orig}
+  if(cl_char == "") alert(e);
+  else {
+        for(i = 0; i < cl_char.length; i++) 
+         {
+         if((cl_char.charCodeAt(i)>=97) && (cl_char.charCodeAt(i)<=122))
+	         	{
+	         	 	Temp[i] = 97 + ((cl_char.charCodeAt(i) - 97) - (keystring.charCodeAt(i) - 97) + 2600)%26;
+              	cl_num += (cl_char.charCodeAt(i) ) - 97 + " ";
+              	pl_num += (Temp[i] - 97) + " "; 
+              	pl_char += String.fromCharCode(Temp[i]);
+          } 	    
+          
+          else if  ((cl_char.charCodeAt(i)>=65) && (cl_char.charCodeAt(i)<=90))
+		       {
+		       	Temp[i] = 65 + ((cl_char.charCodeAt(i)- 65) - (keystring.charCodeAt(i) - 97) + 2600)%26;
+	              cl_num += cl_char.charCodeAt(i) - 65 + " ";
+         		    pl_num += Temp[i] - 65 + " "; 
+                  pl_char += String.fromCharCode(Temp[i]);
+              } 
+               else 
+          			if (cl_char.charCodeAt(i)== 32)
+          			{
+          				cl_num += " ";
+         		   		pl_num += " "; 
+                 		pl_char += " ";
+                 }  
+                 else    
+                 {
+                     cl_num += cl_char.charCodeAt(i) + " ";
+         		   		pl_num += cl_char.charCodeAt(i) + " "; 
+                 		pl_char += String.fromCharCode(cl_char.charCodeAt(i));
+                 }
+          }
+       
+       }       
+        form.enc_cipher_num.value = "";
+        form.enc_cipher_char.value = "";
+        form.dec_plain_num.value = pl_num;
+        form.dec_plain_char.value = pl_char;
+        form.key.value = keystring;        
+
+}
+	</script>
+</head>
+<body>	
+	<div class="img">
+		<img src="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\virtuallab.jpg" alt="Img not found" height="110" width="110"></img>
+	</div>
+	<div class="img1">
+		<img src="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\depstarlogo.png" alt="Img not found" height="110" width="110"></img>
+	</div>
+		
+	<div class="sidebar">
+	<ul>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Virtuallab.html"><li><font color="red"><b>Home</b></font></li></a>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Introduction.html"><li><font color="red"><b>Introduction</b></font></li></a>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Theory.html"><li><font color="red" ><b>Theory</b></font></li></a>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Objevtive.html"><li><font color="red" ><b>Objective</b></font></li></a>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Experiment.html"><li><font color="red"><b>Experiment</b></font></li></a>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Quizzes.html"><li><font color="red"><b>Quizzes</b></font></li></a>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Furtherreading.html"><li><font color="red"><b>FurtherReadings</b></font></li></a>
+		<a href="C:\Users\Parth\Desktop\IT-Sem 6\CNS\Project\Feedback.html"><li><font color="red"><b>Feedback</b></font></li></a>
+	</ul>
+	
+	<div class="line">
+	</div>
+	</div>
+
+	<div class="vignerecipher">
+		<h1><b><font>Experiment</font></b></h1>
+	</div>
+
+<div class="experiment">		
+<form name=encryptform>
+
+
+      
+      <table border="0" width="200">
+        <tr>
+    <td width="528" height="1" valign="top">
+    <p>&nbsp;
+    <table border="0" width="459" cellspacing="0">
+      <tr>
+    <td width="455" height="25" align="left" colspan="4" valign="top" bgcolor="#EBEBEB">
+    <p align="left"><font size="3"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Enter
+    keyword</b>  (</font><font size="2">use lower case letters, any length</font><font size="3">): </font>
+    </td>
+
+
+
+      </tr>
+      <tr>
+    <td width="455" height="26" align="left" colspan="4" bgcolor="#EBEBEB">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" name="key" size="46" value="charusat" style="font-size: 8pt">
+    </td>
+
+
+
+      </tr>
+      <tr>
+    <td width="455" height="26" align="left" colspan="4" bgcolor="#EBEBEB">
+    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp; <input type="text" name="key_num" size="46" style="font-size: 8pt">
+    </td>
+
+
+
+      </tr>
+      <tr>
+    <td width="150" height="24" align="left" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    </td>
+
+
+
+    <td width="301" height="24" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    </td>
+
+
+      </tr>
+      <tr>
+    <td width="150" height="24" align="left" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    </td>
+
+
+
+    <td width="301" height="24" colspan="2" bgcolor="#EBEBEB">
+    <p align="left">
+    &nbsp;
+    </td>
+
+
+      </tr>
+      <tr>
+    <td width="150" height="24" align="left" colspan="2" bgcolor="#EBEBEB">
+Plain text (no blanks or punctuation marks.)
+    </td>
+
+
+
+    <td width="67" height="24" bgcolor="#EBEBEB">
+    &nbsp;
+    </td>
+
+
+    <td width="230" height="24" align="left" bgcolor="#EBEBEB">
+    Cipher text
+    </td>
+      </tr>
+      <tr>
+    <td width="150" height="28" align="left" colspan="2" bgcolor="#EBEBEB">
+<input type="text" name="enc_plain_char" size="20" value="depstar" style="font-size: 8pt">
+    </td>
+
+
+
+    <td width="301" height="28" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    <input type="text" name="enc_cipher_char" size="20" style="font-size: 8pt">
+    </td>
+
+
+      </tr>
+      <tr>
+    <td width="150" height="25" align="left" colspan="2" bgcolor="#EBEBEB">
+<p align="left">
+    <input type="text" name="enc_plain_num" size="20" style="font-size: 8pt">
+    </td>
+
+
+    <td width="301" height="25" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    <input type="text" name="enc_cipher_num" size="20" style="font-size: 8pt">
+    </td>
+      </tr>
+      <tr>
+    <td width="150" height="24" align="left" colspan="2" bgcolor="#EBEBEB">
+    <input type=button value="ENCODE ==>" onClick="ENCODE(this.form);" name="encode">
+    </td>
+    <td width="301" height="24" colspan="2" bgcolor="#EBEBEB">&nbsp;</td>
+      </tr>
+      <tr>
+    <td width="150" height="24" align="left" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    </td>
+    <td width="301" height="24" colspan="2" bgcolor="#EBEBEB">&nbsp;</td>
+      </tr>
+      <tr>
+    <td width="132" height="24" align="left" bgcolor="#EBEBEB">
+    Cipher text
+    </td>
+    <td width="14" height="24" bgcolor="#EBEBEB">&nbsp;</td>
+    <td width="67" height="24" bgcolor="#EBEBEB">&nbsp;</td>
+    <td width="230" height="24" bgcolor="#EBEBEB">Plain text</td>
+      </tr>
+      <tr>
+    <td width="150" height="28" align="left" colspan="2" bgcolor="#EBEBEB">
+    <i>
+    <input type="text" name="dec_cipher_char" size="20" style="font-size: 8pt">
+    </i>
+    </td>
+
+
+
+    <td width="301" height="28" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    <input type="text" name="dec_plain_char" size="20" style="font-size: 8pt">
+    </td>
+
+
+      </tr>
+      <tr>
+    <td width="150" height="25" align="left" colspan="2" bgcolor="#EBEBEB">
+    <i>
+    <input type="text" name="dec_cipher_num" size="20" style="font-size: 8pt">
+    </i>
+    </td>
+    <td width="301" height="25" colspan="2" bgcolor="#EBEBEB">&nbsp; <input type="text" name="dec_plain_num" size="20" style="font-size: 8pt">
+    </td>
+      </tr>
+      <tr>
+    <td width="150" height="24" colspan="2" bgcolor="#EBEBEB">
+    <input type=button value="DECODE ==>" onClick="DECODE(this.form);" name="decode">
+    </td>
+    <td width="301" height="24" colspan="2" bgcolor="#EBEBEB">&nbsp;</td>
+      </tr>
+      <tr>
+    <td width="150" height="24" colspan="2" bgcolor="#EBEBEB">
+    &nbsp;
+    </td>
+    <td width="67" height="24" bgcolor="#EBEBEB">&nbsp;</td>
+    <td width="230" height="24" align="left" bgcolor="#EBEBEB">
+    &nbsp;
+    </td>
+      </tr>
+      
+      
+      
+  </table>
+	</div>
+</div>
+
+	
+</body>
+</html>
